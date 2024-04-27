@@ -17,16 +17,11 @@ var findRotateSteps = function (ring, key) {
   }
   for (let i = 0; i < key.length; i++) {
     const positions = dic[key.charAt(i)];
-    if (i === 0) {
-      for (const po of positions) {
+    for (const po of positions) {
+      let newMap = Infinity;
+      if (i == 0) {
         map[po] = Math.min(po, ring.length - po);
-        if (i === key.length - 1) {
-          final.push(map[po]);
-        }
-      }
-    } else {
-      for (const po of positions) {
-        let newMap = Infinity;
+      } else {
         const prevPostions = dic[key.charAt(i - 1)];
         for (const prePo of prevPostions) {
           let dif = 0;
@@ -38,9 +33,9 @@ var findRotateSteps = function (ring, key) {
           newMap = Math.min(newMap, map[prePo] + dif);
         }
         map[po] = newMap;
-        if (i === key.length - 1) {
-          final.push(map[po]);
-        }
+      }
+      if (i === key.length - 1) {
+        final.push(map[po]);
       }
     }
     result++;
