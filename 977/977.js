@@ -3,8 +3,22 @@
  * @return {number[]}
  */
 var sortedSquares = function (nums) {
-  const squares = nums.map((i) => i * i);
-  squares.sort((a, b) => a - b);
+  const N = nums.length;
+  const result = new Array(N);
+  let left = 0,
+    right = N - 1;
 
-  return squares;
+  for (let i = N - 1; i >= 0; i--) {
+    let square;
+    if (Math.abs(nums[left]) > Math.abs(nums[right])) {
+      square = nums[left];
+      left++;
+    } else {
+      square = nums[right];
+      right--;
+    }
+    result[i] = square * square;
+  }
+
+  return result;
 };
