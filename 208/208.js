@@ -1,5 +1,5 @@
 var Trie = function () {
-  this.tree = [];
+  this.root = {};
 };
 
 /**
@@ -7,7 +7,14 @@ var Trie = function () {
  * @return {void}
  */
 Trie.prototype.insert = function (word) {
-  this.tree.push(word);
+  let node = this.root;
+  for (let c of word) {
+    if (!node[c]) {
+      node[c] = {};
+    }
+    node = node[c];
+  }
+  node.isEnd = true;
 };
 
 /**
@@ -15,7 +22,14 @@ Trie.prototype.insert = function (word) {
  * @return {boolean}
  */
 Trie.prototype.search = function (word) {
-  return this.tree.includes(word);
+  let node = this.root;
+
+  for (let c of word) {
+    if (!node[c]) return false;
+    node = node[c];
+  }
+
+  return !!node.isEnd;
 };
 
 /**
@@ -23,16 +37,13 @@ Trie.prototype.search = function (word) {
  * @return {boolean}
  */
 Trie.prototype.startsWith = function (prefix) {
-  for (let word of this.tree) {
-    if (prefix.length > word) break;
+  let node = this.root;
 
-    for (let i = 0; i < prefix.length; i++) {
-      if (word[i] !== prefix[i]) break;
-      if (i === prefix.length - 1) return true;
-    }
+  for (let c of prefix) {
+    if (!node[c]) return false;
+    node = node[c];
   }
-
-  return false;
+  return true;
 };
 
 /**
